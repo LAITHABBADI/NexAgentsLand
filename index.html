@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NexAgents - Enterprise AI automation made simple">
+    <title>NexAgents | Next-Gen AI Platform</title>
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-dark: #5b21b6;
+            --bg-dark: #0f172a;
+            --text-light: #94a3b8;
+            --glow: #8b5cf6;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: white;
+            background: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 20% 30%, #4c1d9544 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, #2563eb44 0%, transparent 50%);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+            justify-content: center;
+        }
+        .logo-icon {
+            width: 54px;
+            height: 54px;
+            position: relative;
+        }
+        .logo-icon svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3));
+        }
+        .logo-text {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff 0%, #c4b5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header {
+            padding: 4rem 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+        .dashboard-container {
+            position: relative;
+            margin: 2rem auto;
+            max-width: 1000px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 
+                0 0 20px rgba(139, 92, 246, 0.1),
+                0 0 60px rgba(139, 92, 246, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dashboard-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .glow-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background: linear-gradient(45deg, rgba(139, 92, 246, 0.1), transparent);
+        }
+        .email-form {
+            max-width: 500px;
+            margin: 3rem auto;
+            display: flex;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .email-input {
+            flex: 1;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 1rem;
+        }
+        .email-input::placeholder {
+            color: var(--text-light);
+        }
+        .submit-button {
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .submit-button:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 0 15px var(--glow);
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+        .stat {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-description {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .logo-text {
+                font-size: 1.75rem;
+            }
+            .email-form {
+                flex-direction: column;
+                margin: 2rem 1rem;
+            }
+            .submit-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" 
+                              stroke="url(#gradient)" stroke-width="2" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="gradient" x1="2" y1="2" x2="22" y2="22">
+                                <stop offset="0%" stop-color="#fff" />
+                                <stop offset="100%" stop-color="#8b5cf6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">NexAgents</span>
+            </div>
+            <h1>Enterprise AI Automation Made Simple</h1>
+            <p class="subtitle">The best automation platform for SMEs and non-technical users. Build custom AI agents, workflows, and chatbots with enterprise-grade support</p>
+            
+            <form class="email-form" onsubmit="submitEmail(event)">
+                <input type="email" class="email-input" placeholder="Enter your email for early access" required>
+                <button type="submit" class="submit-button">Get Access</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="dashboard-container">
+            <img src="/api/placeholder/1000/600" alt="AI Operations Dashboard" class="dashboard-image">
+            <div class="glow-effect"></div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">AI Agents</div>
+                <div class="stat-label">Custom Automation</div>
+                <div class="stat-description">Build specialized AI agents for your unique business needs with no coding required</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">Chatbots</div>
+                <div class="stat-label">24/7 Support</div>
+                <div class="stat-description">Deploy intelligent chatbots that understand your business context and customer needs</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">Workflows</div>
+                <div class="stat-label">Process Automation</div>
+                <div class="stat-description">Create and monitor AI-powered workflows with real-time KPI tracking</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">1hr</div>
+                <div class="stat-label">Technical Support</div>
+                <div class="stat-description">Get expert technical assistance within one hour to optimize your automations</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function submitEmail(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            
+            fetch('xyz:400/email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Access request submitted successfully!');
+                    event.target.reset();
+                } else {
+                    throw new Error('Something went wrong');
+                }
+            })
+            .catch(error => {
+                alert('Error submitting request. Please try again.');
+            });
+        }
+    <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    function submitEmail(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        
+        // Show loading state
+        const submitButton = event.target.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
+        
+        fetch('http://142.93.172.196:1250', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => {
+            if (response.ok) {
+                showNotification('Success! We\'ll be in touch soon.', 'success');
+                event.target.reset();
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Error submitting request. Please try again.', 'error');
+        })
+        .finally(() => {
+            // Reset button state
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+        });
+    }
+
+    // Notification system
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = 'notification ' + type;
+        notification.textContent = message;
+        
+        // Style the notification
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.right = '20px';
+        notification.style.padding = '1rem 2rem';
+        notification.style.borderRadius = '8px';
+        notification.style.animation = 'slideIn 0.3s ease-out';
+        notification.style.zIndex = '1000';
+        
+        if (type === 'success') {
+            notification.style.backgroundColor = '#10B981';
+        } else {
+            notification.style.backgroundColor = '#EF4444';
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+
+    // Add smooth scroll behavior for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Optional: Add intersection observer for animation triggers
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    document.querySelectorAll('.stat').forEach((stat) => {
+        observer.observe(stat);
+    });
+
+    // Add this to your existing styles
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .notification {
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    `;
+    document.head.appendChild(styleSheet);
+</script>
+</body>
+</html>
