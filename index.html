@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="NexAgents - Enterprise AI automation made simple">
     <title>NexAgents | Next-Gen AI Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
     <style>
+        /* All existing styles remain exactly the same */
         :root {
             --primary: #6d28d9;
             --primary-dark: #5b21b6;
@@ -185,6 +187,28 @@
                 width: 100%;
             }
         }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -208,7 +232,7 @@
             <h1>Enterprise AI Automation Made Simple</h1>
             <p class="subtitle">The best automation platform for SMEs and non-technical users. Build custom AI agents, workflows, and chatbots with enterprise-grade support</p>
             
-            <form class="email-form" onsubmit="submitEmail(event)">
+            <form class="email-form" id="emailForm">
                 <input type="email" class="email-input" placeholder="Enter your email for early access" required>
                 <button type="submit" class="submit-button">Get Access</button>
             </form>
@@ -245,129 +269,106 @@
         </div>
     </main>
 
+    <script>
+        // Initialize Lucide icons after DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
 
-    // Initialize Lucide icons
-    lucide.createIcons();
-    
-    function submitEmail(event) {
-        event.preventDefault();
-        const email = event.target.querySelector('input[type="email"]').value;
-        
-        // Show loading state
-        const submitButton = event.target.querySelector('button[type="submit"]');
-        const originalText = submitButton.textContent;
-        submitButton.textContent = 'Sending...';
-        submitButton.disabled = true;
-        
-        fetch('http://142.93.172.196:1250', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ email: email })
-        })
-        .then(response => {
-            if (response.ok) {
-                showNotification('Success! We\'ll be in touch soon.', 'success');
-                event.target.reset();
-            } else {
-                throw new Error('Network response was not ok');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('Error submitting request. Please try again.', 'error');
-        })
-        .finally(() => {
-            // Reset button state
-            submitButton.textContent = originalText;
-            submitButton.disabled = false;
-        });
-    }
-    
-    // Notification system
-    function showNotification(message, type) {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.textContent = message;
-        
-        // Style the notification
-        Object.assign(notification.style, {
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            padding: '1rem 2rem',
-            borderRadius: '8px',
-            animation: 'slideIn 0.3s ease-out',
-            zIndex: '1000',
-            color: 'white',
-            fontWeight: '500',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-            backgroundColor: type === 'success' ? '#10B981' : '#EF4444'
-        });
-        
-        document.body.appendChild(notification);
-        
-        // Remove notification after 3 seconds
-        setTimeout(() => {
-            notification.style.animation = 'slideOut 0.3s ease-out';
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
-    }
-    
-    // Add smooth scroll behavior for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-    
-    // Optional: Add intersection observer for animation triggers
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
+        // Email form submission handler
+        document.getElementById('emailForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            
+            // Show loading state
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Sending...';
+            submitButton.disabled = true;
+            
+            fetch('http://142.93.172.196:1250', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => {
+                if (response.ok) {
+                    showNotification('Success! We\'ll be in touch soon.', 'success');
+                    event.target.reset();
+                } else {
+                    throw new Error('Network response was not ok');
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Error submitting request. Please try again.', 'error');
+            })
+            .finally(() => {
+                // Reset button state
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
             });
-        },
-        { threshold: 0.1 }
-    );
-    
-    document.querySelectorAll('.stat').forEach((stat) => {
-        observer.observe(stat);
-    });
-    
-    // Add animation styles
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        });
+
+        // Notification system
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            Object.assign(notification.style, {
+                position: 'fixed',
+                bottom: '20px',
+                right: '20px',
+                padding: '1rem 2rem',
+                borderRadius: '8px',
+                animation: 'slideIn 0.3s ease-out',
+                zIndex: '1000',
+                color: 'white',
+                fontWeight: '500',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                backgroundColor: type === 'success' ? '#10B981' : '#EF4444'
+            });
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
-    
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(styleSheet);
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+        
+        document.querySelectorAll('.stat').forEach((stat) => {
+            observer.observe(stat);
+        });
+    </script>
+</body>
+</html>
